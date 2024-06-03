@@ -484,6 +484,7 @@ class PythonFileOp(FileOpBase):
             if self.parameter_pass_method == "env":
                 self.set_parameters_in_env()
             
+            logger.info("----------------------Python logs start----------------------")
             with open(python_script_output, "w") as log_file:
                 process = subprocess.Popen(run_args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
                 for line in iter(process.stdout.readline, b''):
@@ -492,9 +493,9 @@ class PythonFileOp(FileOpBase):
                     
                 process.stdout.close()
                 return_code = process.wait()
+                logger.info("----------------------Python logs ends----------------------")
                 if return_code:
                     raise subprocess.CalledProcessError(return_code, run_args)
-
             duration = time.time() - t0
             OpUtil.log_operation_info("python script execution completed", duration)
 
